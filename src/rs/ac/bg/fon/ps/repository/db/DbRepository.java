@@ -12,6 +12,7 @@ import rs.ac.bg.fon.ps.repository.Repository;
 /**
  *
  * @author Tamara
+ * @param <T>
  */
 public interface DbRepository<T> extends Repository<T>{
     default public void connect() throws Exception{

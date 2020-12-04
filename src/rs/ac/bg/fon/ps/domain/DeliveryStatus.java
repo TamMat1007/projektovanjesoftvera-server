@@ -10,7 +10,7 @@ package rs.ac.bg.fon.ps.domain;
  * @author Tamara
  */
 public enum DeliveryStatus {
-    BEING_DELIVERED,
+    IN_PROGRESS,
     DELIVERED,
     CANCELED
 }

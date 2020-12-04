@@ -6,6 +6,9 @@
 package rs.ac.bg.fon.ps.domain;
 
 import com.mysql.cj.util.TimeUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,15 +20,19 @@ public class Restaurant {
     private String restaurantName;
     private String restaurantAddress;
     private String restaurantPhone;
-    private TimeUtil openWorkingDay;
-    private TimeUtil closedWorkingDay;
-    private TimeUtil openWeekend;
-    private TimeUtil closedWeekend;
+    private Date openWorkingDay;
+    private Date closedWorkingDay;
+    private Date openWeekend;
+    private Date closedWeekend;
+    private City city;
+    private List<Product> products;
 
+            
     public Restaurant() {
+        products=new ArrayList<>();
     }
 
-    public Restaurant(Long restaurantID, String restaurantName, String restaurantAddress, String restaurantPhone, TimeUtil openWorkingDay, TimeUtil closedWorkingDay, TimeUtil openWeekend, TimeUtil closedWeekend) {
+    public Restaurant(Long restaurantID, String restaurantName, String restaurantAddress, String restaurantPhone, Date openWorkingDay, Date closedWorkingDay, Date openWeekend, Date closedWeekend,City city) {
         this.restaurantID = restaurantID;
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
@@ -34,13 +41,14 @@ public class Restaurant {
         this.closedWorkingDay = closedWorkingDay;
         this.openWeekend = openWeekend;
         this.closedWeekend = closedWeekend;
+        this.city=city;
     }
 
-    public TimeUtil getClosedWeekend() {
+    public Date getClosedWeekend() {
         return closedWeekend;
     }
 
-    public void setClosedWeekend(TimeUtil closedWeekend) {
+    public void setClosedWeekend(Date closedWeekend) {
         this.closedWeekend = closedWeekend;
     }
 
@@ -76,33 +84,50 @@ public class Restaurant {
         this.restaurantPhone = restaurantPhone;
     }
 
-    public TimeUtil getOpenWorkingDay() {
+    public Date getOpenWorkingDay() {
         return openWorkingDay;
     }
 
-    public void setOpenWorkingDay(TimeUtil openWorkingDay) {
+    public void setOpenWorkingDay(Date openWorkingDay) {
         this.openWorkingDay = openWorkingDay;
     }
 
-    public TimeUtil getClosedWorkingDay() {
+    public Date getClosedWorkingDay() {
         return closedWorkingDay;
     }
 
-    public void setClosedWorkingDay(TimeUtil closedWorkingDay) {
+    public void setClosedWorkingDay(Date closedWorkingDay) {
         this.closedWorkingDay = closedWorkingDay;
     }
 
-    public TimeUtil getOpenWeekend() {
+    public Date getOpenWeekend() {
         return openWeekend;
     }
 
-    public void setOpenWeekend(TimeUtil openWeekend) {
+    public void setOpenWeekend(Date openWeekend) {
         this.openWeekend = openWeekend;
     }
+    
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+    
 
     @Override
     public String toString() {
-        return "Restaurant{" + "restaurantID=" + restaurantID + ", restaurantName=" + restaurantName + ", restaurantAddress=" + restaurantAddress + ", restaurantPhone=" + restaurantPhone + ", openWorkingDay=" + openWorkingDay + ", closedWorkingDay=" + closedWorkingDay + ", openWeekend=" + openWeekend + ", closedWeekend=" + closedWeekend + '}';
+        return  restaurantName ;
     }
 
     @Override
@@ -116,6 +141,7 @@ public class Restaurant {
         hash = 47 * hash + Objects.hashCode(this.closedWorkingDay);
         hash = 47 * hash + Objects.hashCode(this.openWeekend);
         hash = 47 * hash + Objects.hashCode(this.closedWeekend);
+        
         return hash;
     }
 
@@ -136,6 +162,8 @@ public class Restaurant {
         }
         return true;
     }
+
+   
     
     
 }

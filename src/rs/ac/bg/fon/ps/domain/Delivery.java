@@ -5,7 +5,9 @@
  */
 package rs.ac.bg.fon.ps.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,28 +20,35 @@ public class Delivery {
     private DeliveryStatus deliveryStatus;
     private String consumerAddress;
     private String consumerPhone;
-    private Double deliveryPrice;
-    private Double totalAmount;
+    private BigDecimal deliveryCost;
+    private BigDecimal itemsAmount;
+    private Operator operator;
+    private Deliverer deliverer;
+    private List <DeliveryItem> deliveryItems;
 
     public Delivery() {
     }
 
-    public Delivery(Long deliveryID, Date dateOfCreation, DeliveryStatus deliveryStatus, String consumerAddress, String consumerPhone, Double deliveryPrice, Double totalAmount) {
+    public Delivery(Long deliveryID, Date dateOfCreation, DeliveryStatus deliveryStatus, String consumerAddress, String consumerPhone, BigDecimal deliveryCost, BigDecimal itemsAmount, Operator operator, Deliverer deliverer, List<DeliveryItem> deliveryItems) {
         this.deliveryID = deliveryID;
         this.dateOfCreation = dateOfCreation;
         this.deliveryStatus = deliveryStatus;
         this.consumerAddress = consumerAddress;
         this.consumerPhone = consumerPhone;
-        this.deliveryPrice = deliveryPrice;
-        this.totalAmount = totalAmount;
+        this.deliveryCost = deliveryCost;
+        this.itemsAmount = itemsAmount;
+        this.operator = operator;
+        this.deliverer = deliverer;
+        this.deliveryItems = deliveryItems;
     }
 
-    public Double getTotalAmount() {
-        return totalAmount;
+
+    public BigDecimal getItemsAmount() {
+        return itemsAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setItemsAmount(BigDecimal itemsAmount) {
+        this.itemsAmount = itemsAmount;
     }
 
     public Long getDeliveryID() {
@@ -82,17 +91,42 @@ public class Delivery {
         this.consumerPhone = consumerPhone;
     }
 
-    public Double getDeliveryPrice() {
-        return deliveryPrice;
+    public BigDecimal getDeliveryCost() {
+        return deliveryCost;
     }
 
-    public void setDeliveryPrice(Double deliveryPrice) {
-        this.deliveryPrice = deliveryPrice;
+    public void setDeliveryCost(BigDecimal deliveryCost) {
+        this.deliveryCost = deliveryCost;
     }
 
+     public Operator getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
+    public Deliverer getDeliverer() {
+        return deliverer;
+    }
+
+    public void setDeliverer(Deliverer deliverer) {
+        this.deliverer = deliverer;
+    }
+
+    public List <DeliveryItem> getDeliveryItems() {
+        return deliveryItems;
+    }
+
+    public void setDeliveryItems(List <DeliveryItem> deliveryItems) {
+        this.deliveryItems = deliveryItems;
+    }
+    
+    
     @Override
     public String toString() {
-        return "Delivery{" + "deliveryID=" + deliveryID + ", dateOfCreation=" + dateOfCreation + ", deliveryStatus=" + deliveryStatus + ", consumerAddress=" + consumerAddress + ", consumerPhone=" + consumerPhone + ", deliveryPrice=" + deliveryPrice + ", totalAmount=" + totalAmount + '}';
+        return deliveryID + ", date=" + dateOfCreation ;
     }
 
     @Override
@@ -103,8 +137,8 @@ public class Delivery {
         hash = 83 * hash + Objects.hashCode(this.deliveryStatus);
         hash = 83 * hash + Objects.hashCode(this.consumerAddress);
         hash = 83 * hash + Objects.hashCode(this.consumerPhone);
-        hash = 83 * hash + Objects.hashCode(this.deliveryPrice);
-        hash = 83 * hash + Objects.hashCode(this.totalAmount);
+        hash = 83 * hash + Objects.hashCode(this.deliveryCost);
+        hash = 83 * hash + Objects.hashCode(this.itemsAmount);
         return hash;
     }
 
@@ -125,6 +159,7 @@ public class Delivery {
         }
         return true;
     }
-    
+
+   
     
 }

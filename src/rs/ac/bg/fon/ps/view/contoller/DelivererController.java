@@ -87,10 +87,10 @@ public class DelivererController {
                 Deliverer deliverer = getDelivererFromForm();
                 try {
                     Controller.getInstance().deleteDeliverer(deliverer);
-                    JOptionPane.showMessageDialog(frmDeliverer, "Deliverer deleted successfully!\n", "Delete deliverer", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frmDeliverer, "Deliverer deactivated successfully!\n", "Deactivate deliverer", JOptionPane.INFORMATION_MESSAGE);
                     frmDeliverer.dispose();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(frmDeliverer, "Error deleting deliverer!\n" + ex.getMessage(), "Delete deliverer", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frmDeliverer, "Error deactivating deliverer!\n" + ex.getMessage(), "Deactivate deliverer", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(DelivererController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -106,7 +106,7 @@ public class DelivererController {
                 Deliverer deliverer = getDelivererFromForm();
                 try {
                     Controller.getInstance().editDeliverer(deliverer);
-                    JOptionPane.showMessageDialog(frmDeliverer, "Deliverer changed successfully!\n", "Edit deliverer", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frmDeliverer, "Deliverer edited successfully!\n", "Edit deliverer", JOptionPane.INFORMATION_MESSAGE);
                     frmDeliverer.dispose();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frmDeliverer, "Error editting deliverer!\n" + ex.getMessage(), "Edit deliverer", JOptionPane.ERROR_MESSAGE);

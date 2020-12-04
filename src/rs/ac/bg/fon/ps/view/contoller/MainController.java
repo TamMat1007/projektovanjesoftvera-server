@@ -52,6 +52,17 @@ public class MainController {
                 MainCordinator.getInstance().openShowAllDelivererForm();
             }
         });     
+        
+        frmMain.jmiDeliveryNewAddActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                jmiDeliveryNewActionPerformed(actionEvent);
+            }
+
+            private void jmiDeliveryNewActionPerformed(ActionEvent actionEvent) {
+                MainCordinator.getInstance().openAddNewDeliveryForm();
+            }
+        });
     }
     
     

@@ -82,7 +82,8 @@ public class Deliverer {
 
     @Override
     public String toString() {
-        return "Deliverer{" + "DelivererID=" + delivererID + ", DelivererName=" + delivererName + ", DelivererLastname=" + delivererLastname + ", DelivererPhone=" + delivererPhone + ", delivererStatus=" + delivererStatus + ", city=" + delivererCity + '}';
+        return getDelivererName()+" "+ getDelivererLastname();
+        //return "Deliverer{" + "DelivererID=" + delivererID + ", DelivererName=" + delivererName + ", DelivererLastname=" + delivererLastname + ", DelivererPhone=" + delivererPhone + ", delivererStatus=" + delivererStatus + ", city=" + delivererCity + '}';
     }
 
 

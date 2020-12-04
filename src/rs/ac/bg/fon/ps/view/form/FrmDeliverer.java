@@ -155,7 +155,7 @@ public class FrmDeliverer extends javax.swing.JDialog {
 
         btnCancel.setText("Cancel");
 
-        btnDelete.setText("Delete");
+        btnDelete.setText("Deactivate");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -186,7 +186,7 @@ public class FrmDeliverer extends javax.swing.JDialog {
                             .addComponent(btnEdit)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnEnableChanges))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -16,4 +16,10 @@ public interface Repository<T> {
     void add(T param)throws Exception;
     void edit(T param) throws Exception;
     void delete(T param)throws Exception;
+
+   // T get(K id);
+    
+   // List<T> getAll(City city);
+
+    
 }

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import rs.ac.bg.fon.ps.domain.Operator;
 import rs.ac.bg.fon.ps.view.contoller.DelivererController;
+import rs.ac.bg.fon.ps.view.contoller.DeliveryController;
 import rs.ac.bg.fon.ps.view.contoller.LoginController;
 import rs.ac.bg.fon.ps.view.contoller.MainController;
 import rs.ac.bg.fon.ps.view.form.FrmDeliverer;
@@ -16,6 +17,7 @@ import rs.ac.bg.fon.ps.view.form.FrmLogin;
 import rs.ac.bg.fon.ps.view.form.FrmMain;
 import rs.ac.bg.fon.ps.view.form.FrmViewDeliverers;
 import rs.ac.bg.fon.ps.view.form.DelivererViewContoller;
+import rs.ac.bg.fon.ps.view.form.FrmDelivery;
 import rs.ac.bg.fon.ps.view.form.util.FormMode;
 
 /**
@@ -50,15 +52,7 @@ public class MainCordinator {
       mainContoller.openForm();
     }
     
-    public Object getParam(String name) {
-        return params.get(name);
-    }
-    
-    public void addParam(String name, Object key) {
-        params.put(name, key);
-    }
-
-    public void openAddNewDelivererForm() {
+     public void openAddNewDelivererForm() {
        DelivererController delivererController = new DelivererController(new FrmDeliverer(mainContoller.getFrmMain(), true));
        delivererController.openForm(FormMode.FORM_ADD);
     }
@@ -68,16 +62,31 @@ public class MainCordinator {
        viewDelivererContoller.openForm();
     }
 
-    public MainController getMainContoller() {
-        return mainContoller;
-    }
-
-
     public void openDelivererDetailsDelivererForm() {
         FrmDeliverer delivererDetails = new FrmDeliverer(mainContoller.getFrmMain(), true);
         DelivererController delivererController = new DelivererController(delivererDetails);
         delivererController.openForm(FormMode.FORM_VIEW);
     }
+
+    public void openAddNewDeliveryForm() {
+       DeliveryController deliveryController = new DeliveryController(new FrmDelivery(mainContoller.getFrmMain(), true));
+       deliveryController.openForm(FormMode.FORM_ADD);
+
+    }
+    
+    public Object getParam(String name) {
+        return params.get(name);
+    }
+    
+    public void addParam(String name, Object key) {
+        params.put(name, key);
+    }
+
+     public MainController getMainContoller() {
+        return mainContoller;
+    }
+
+   
 
  
 

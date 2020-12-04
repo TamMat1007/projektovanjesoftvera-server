@@ -10,13 +10,11 @@ import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.domain.City;
 import rs.ac.bg.fon.ps.domain.Operator;
 import rs.ac.bg.fon.ps.repository.Repository;
-import rs.ac.bg.fon.ps.repository.RepositoryDeliverer;
-import rs.ac.bg.fon.ps.repository.RepositoryCity;
-import rs.ac.bg.fon.ps.repository.RepositoryOperator;
 import rs.ac.bg.fon.ps.repository.db.DbRepository;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbCity;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbDeliverer;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbOperator;
+import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbRestaurant;
 
 /**
  *
@@ -27,6 +25,7 @@ public class Controller {
     private final Repository repositoryOperator;
     private final Repository repositoryCity;
     private final Repository repositoryDeliverer;
+    private final Repository repositoryRestaurant;
     
     private static Controller controller;
 
@@ -34,7 +33,7 @@ public class Controller {
         this.repositoryOperator = new RepositoryDbOperator();
         this.repositoryCity= new RepositoryDbCity();
         this.repositoryDeliverer= new RepositoryDbDeliverer();
-        
+        this.repositoryRestaurant=new RepositoryDbRestaurant();
     }
     
     public static Controller getInstance() {
@@ -115,4 +114,22 @@ public class Controller {
             ((DbRepository)repositoryDeliverer).disconnect();
         }
     }
+
+//    public List<Restaurant> getAllRestaurants(City city) throws Exception {
+//         List<Restaurant> restaurants=null;
+//        ((DbRepository)repositoryRestaurant).connect();
+//        try{
+//            restaurants = repositoryRestaurant.getAll(city);
+//            ((DbRepository)repositoryRestaurant).commit();
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            ((DbRepository)repositoryRestaurant).rollback();
+//            throw e;
+//        }finally{
+//            ((DbRepository)repositoryRestaurant).disconnect();
+//        }
+//        return restaurants;
+//    }
+
+    
 }
