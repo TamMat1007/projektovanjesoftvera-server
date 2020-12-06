@@ -16,8 +16,10 @@ import rs.ac.bg.fon.ps.view.form.FrmDeliverer;
 import rs.ac.bg.fon.ps.view.form.FrmLogin;
 import rs.ac.bg.fon.ps.view.form.FrmMain;
 import rs.ac.bg.fon.ps.view.form.FrmViewDeliverers;
-import rs.ac.bg.fon.ps.view.form.DelivererViewContoller;
+import rs.ac.bg.fon.ps.view.contoller.DelivererViewContoller;
+import rs.ac.bg.fon.ps.view.contoller.RestaurantsContoller;
 import rs.ac.bg.fon.ps.view.form.FrmDelivery;
+import rs.ac.bg.fon.ps.view.form.FrmRestaurants;
 import rs.ac.bg.fon.ps.view.form.util.FormMode;
 
 /**
@@ -74,6 +76,12 @@ public class MainCordinator {
 
     }
     
+    public void openRestaurantsForm() {
+        RestaurantsContoller restaurantsController= new RestaurantsContoller(new FrmRestaurants(mainContoller.getFrmMain(), true));
+        restaurantsController.openForm();
+    }
+
+    
     public Object getParam(String name) {
         return params.get(name);
     }
@@ -85,9 +93,5 @@ public class MainCordinator {
      public MainController getMainContoller() {
         return mainContoller;
     }
-
-   
-
- 
 
 }

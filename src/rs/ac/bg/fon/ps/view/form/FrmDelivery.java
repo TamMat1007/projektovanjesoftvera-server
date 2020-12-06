@@ -5,6 +5,7 @@
  */
 package rs.ac.bg.fon.ps.view.form;
 
+import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -529,6 +530,14 @@ public class FrmDelivery extends javax.swing.JDialog {
 
     public JComboBox<Object> getCbDeliveryStatus() {
         return cbDeliveryStatus;
+    }
+
+    public void addAddBtnActionListener(ActionListener actionListener) {
+        btnAdd.addActionListener(actionListener);
+    }
+
+    public void addRemoveBtnActionListener(ActionListener actionListener) {
+        btnRemove.addActionListener(actionListener);
     }
     
     

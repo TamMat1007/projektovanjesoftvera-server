@@ -161,7 +161,7 @@ public class FrmViewDeliverers extends javax.swing.JDialog {
     }
 
     
-    void getBtnDetailsAddActionListener(ActionListener actionListener) {
+    public void getBtnDetailsAddActionListener(ActionListener actionListener) {
         btnDetails.addActionListener(actionListener);
     }
     

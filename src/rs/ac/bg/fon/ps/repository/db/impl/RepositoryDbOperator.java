@@ -64,5 +64,10 @@ public class RepositoryDbOperator implements DbRepository<Operator> {
     public void delete(Operator param) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Operator> findByQuery(String sql) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

@@ -35,6 +35,8 @@ public class FrmMain extends javax.swing.JFrame {
 
         lblCurrentOperator = new javax.swing.JLabel();
         jmenuBarMain = new javax.swing.JMenuBar();
+        jmenuRestaurant = new javax.swing.JMenu();
+        jmiRestaurantsShowAll = new javax.swing.JMenuItem();
         jmenuDeliverer = new javax.swing.JMenu();
         jmiDelivererNew = new javax.swing.JMenuItem();
         jmiDelivererShowAll = new javax.swing.JMenuItem();
@@ -44,6 +46,13 @@ public class FrmMain extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lblCurrentOperator.setText("jLabel1");
+
+        jmenuRestaurant.setText("Restaurants");
+
+        jmiRestaurantsShowAll.setText("ShowAll");
+        jmenuRestaurant.add(jmiRestaurantsShowAll);
+
+        jmenuBarMain.add(jmenuRestaurant);
 
         jmenuDeliverer.setText("Deliverer");
         jmenuDeliverer.addActionListener(new java.awt.event.ActionListener() {
@@ -120,9 +129,11 @@ public class FrmMain extends javax.swing.JFrame {
     private javax.swing.JMenuBar jmenuBarMain;
     private javax.swing.JMenu jmenuDeliverer;
     private javax.swing.JMenu jmenuDelivery;
+    private javax.swing.JMenu jmenuRestaurant;
     private javax.swing.JMenuItem jmiDelivererNew;
     private javax.swing.JMenuItem jmiDelivererShowAll;
     private javax.swing.JMenuItem jmiDeliveryNew;
+    private javax.swing.JMenuItem jmiRestaurantsShowAll;
     private javax.swing.JLabel lblCurrentOperator;
     // End of variables declaration//GEN-END:variables
 
@@ -144,6 +155,10 @@ public class FrmMain extends javax.swing.JFrame {
 
     public void jmiDeliveryNewAddActionListener(ActionListener actionListener) {
         jmiDeliveryNew.addActionListener(actionListener);
+    }
+
+    public void jmiRestaurantsShowAllAddActionListeners(ActionListener actionListener) {
+        jmiRestaurantsShowAll.addActionListener(actionListener);
     }
     
      

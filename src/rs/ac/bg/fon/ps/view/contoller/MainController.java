@@ -63,6 +63,16 @@ public class MainController {
                 MainCordinator.getInstance().openAddNewDeliveryForm();
             }
         });
+        frmMain.jmiRestaurantsShowAllAddActionListeners(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                jmiRestaurantsShowAllActionPerformed(actionEvent);
+            }
+
+            private void jmiRestaurantsShowAllActionPerformed(ActionEvent actionEvent) {
+                MainCordinator.getInstance().openRestaurantsForm();
+            }
+        });
     }
     
     

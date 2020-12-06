@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.ac.bg.fon.ps.view.form;
+package rs.ac.bg.fon.ps.view.contoller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +17,7 @@ import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
+import rs.ac.bg.fon.ps.view.form.FrmViewDeliverers;
 import rs.ac.bg.fon.ps.view.form.components.table.DelivererTableModel;
 
 /**

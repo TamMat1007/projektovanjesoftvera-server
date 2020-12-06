@@ -65,5 +65,10 @@ public class RepositoryDbCity implements DbRepository<City> {
     public void delete(City param) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<City> findByQuery(String sql) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

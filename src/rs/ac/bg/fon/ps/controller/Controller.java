@@ -9,11 +9,14 @@ import java.util.List;
 import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.domain.City;
 import rs.ac.bg.fon.ps.domain.Operator;
+import rs.ac.bg.fon.ps.domain.Product;
+import rs.ac.bg.fon.ps.domain.Restaurant;
 import rs.ac.bg.fon.ps.repository.Repository;
 import rs.ac.bg.fon.ps.repository.db.DbRepository;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbCity;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbDeliverer;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbOperator;
+import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbProduct;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbRestaurant;
 
 /**
@@ -26,6 +29,7 @@ public class Controller {
     private final Repository repositoryCity;
     private final Repository repositoryDeliverer;
     private final Repository repositoryRestaurant;
+    private final Repository repositoryProduct;
     
     private static Controller controller;
 
@@ -34,6 +38,7 @@ public class Controller {
         this.repositoryCity= new RepositoryDbCity();
         this.repositoryDeliverer= new RepositoryDbDeliverer();
         this.repositoryRestaurant=new RepositoryDbRestaurant();
+        this.repositoryProduct= new RepositoryDbProduct();
     }
     
     public static Controller getInstance() {
@@ -72,10 +77,10 @@ public class Controller {
     }
     
     public List<Deliverer> getAllDeliverers() throws Exception{
-          List<Deliverer> products=null;
+          List<Deliverer> deliverers=null;
         ((DbRepository)repositoryDeliverer).connect();
         try{
-            products = repositoryDeliverer.getAll();
+            deliverers = repositoryDeliverer.getAll();
             ((DbRepository)repositoryDeliverer).commit();
         }catch(Exception e){
             e.printStackTrace();
@@ -84,7 +89,7 @@ public class Controller {
         }finally{
             ((DbRepository)repositoryDeliverer).disconnect();
         }
-        return products;
+        return deliverers;
     }
 
     public void deleteDeliverer(Deliverer deliverer) throws Exception {
@@ -115,21 +120,59 @@ public class Controller {
         }
     }
 
-//    public List<Restaurant> getAllRestaurants(City city) throws Exception {
-//         List<Restaurant> restaurants=null;
-//        ((DbRepository)repositoryRestaurant).connect();
-//        try{
-//            restaurants = repositoryRestaurant.getAll(city);
-//            ((DbRepository)repositoryRestaurant).commit();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            ((DbRepository)repositoryRestaurant).rollback();
-//            throw e;
-//        }finally{
-//            ((DbRepository)repositoryRestaurant).disconnect();
-//        }
-//        return restaurants;
-//    }
+    public List<Restaurant> getAllRestaurantsFromCity(City city) throws Exception {
+        List<Restaurant> restaurants=null;
+        String sql="SELECT r.restaurantID as restaurantID, r.restaurantName as restaurantName, "
+             + "restaurantAddress,restaurantPhone,openWorkingDay,closedWorkingDay,openWeekend,closedWeekend, c.cityID as cid, c.cityName as cname FROM restaurant r inner join city c ON (r.cityID=c.cityID) where r.cityID="+ city.getCityID();
+        ((DbRepository)repositoryRestaurant).connect();
+        try{
+            restaurants = repositoryRestaurant.findByQuery(sql);
+            ((DbRepository)repositoryRestaurant).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DbRepository)repositoryRestaurant).rollback();
+            throw e;
+        }finally{
+            ((DbRepository)repositoryRestaurant).disconnect();
+        }
+        return restaurants;
+    }
+
+    public List<Restaurant> getAllRestaurants() throws Exception {
+          List<Restaurant> restaurants=null;
+        ((DbRepository)repositoryRestaurant).connect();
+        try{
+            restaurants = repositoryRestaurant.getAll();
+            ((DbRepository)repositoryRestaurant).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DbRepository)repositoryRestaurant).rollback();
+            throw e;
+        }finally{
+            ((DbRepository)repositoryRestaurant).disconnect();
+        }
+        return restaurants;
+    }
+
+    public List<Product> getAllProductsFromRestaurant(Restaurant restaurant) throws Exception {
+        List<Product> products=null;
+        String sql="SELECT productOrderNumber,productName,productPrice,currency,r.restaurantID as restaurantID, r.restaurantName as restaurantName ,restaurantAddress,"
+                + "restaurantPhone,openWorkingDay,closedWorkingDay,openWeekend,closedWeekend,c.cityID AS cid, c.cityName AS cname"
+                + " FROM product p INNER JOIN restaurant r ON(p.restaurantID=r.restaurantID)INNER JOIN city c ON (r.cityID=c.cityID)WHERE p.restaurantID="+ restaurant.getRestaurantID();
+        ((DbRepository)repositoryProduct).connect();
+        try{
+            products = repositoryProduct.findByQuery(sql);
+            ((DbRepository)repositoryProduct).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DbRepository)repositoryProduct).rollback();
+            throw e;
+        }finally{
+            ((DbRepository)repositoryProduct).disconnect();
+        }
+        return products;
+
+    }   
 
     
 }

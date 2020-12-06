@@ -6,6 +6,7 @@
 package rs.ac.bg.fon.ps.repository;
 
 import java.util.List;
+import rs.ac.bg.fon.ps.domain.Restaurant;
 
 /**
  *
@@ -20,6 +21,8 @@ public interface Repository<T> {
    // T get(K id);
     
    // List<T> getAll(City city);
+
+    List<T> findByQuery(String sql)throws Exception;
 
     
 }

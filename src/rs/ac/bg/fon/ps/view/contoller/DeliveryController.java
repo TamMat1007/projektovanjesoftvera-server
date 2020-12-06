@@ -5,20 +5,25 @@
  */
 package rs.ac.bg.fon.ps.view.contoller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.City;
 import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.domain.Delivery;
 import rs.ac.bg.fon.ps.domain.DeliveryStatus;
 import rs.ac.bg.fon.ps.domain.Operator;
+import rs.ac.bg.fon.ps.domain.Product;
 import rs.ac.bg.fon.ps.domain.Restaurant;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
@@ -50,14 +55,16 @@ public class DeliveryController {
         fillCbDeliverer();
         fillDefaultValues();
         fillTblDelivery();
-        //fillCbProduct();
+        addActionListeners();
     }
 
     private void clearCb() {
-        frmDelivery.getCbDeliveryCity().setSelectedIndex(-1);
         frmDelivery.getCbRestaurant().setSelectedIndex(-1);
         frmDelivery.getCbProduct().setSelectedIndex(-1);
         frmDelivery.getCbDeliverer().setSelectedIndex(-1);
+        frmDelivery.getCbDeliveryCity().removeAllItems();
+        frmDelivery.getCbRestaurant().removeAllItems();
+        frmDelivery.getCbProduct().removeAllItems();
     }
     
     private void fillCbDeliveryStatus() {
@@ -69,7 +76,6 @@ public class DeliveryController {
     }
     
     private void fillCbCity() {
-        frmDelivery.getCbDeliveryCity().removeAllItems();
         List<City> cities = Controller.getInstance().getAllCities();
         frmDelivery.getCbDeliveryCity().setModel(new DefaultComboBoxModel<>(cities.toArray()));
         frmDelivery.getCbDeliveryCity().setSelectedIndex(-1);
@@ -77,7 +83,7 @@ public class DeliveryController {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange()==ItemEvent.SELECTED){
-                    //fillCbRestaurant();
+                    fillCbRestaurant();
                 }
             }
         });
@@ -85,7 +91,7 @@ public class DeliveryController {
     
     private void fillCbDeliverer() {
         try {
-            frmDelivery.getCbDeliveryCity().removeAllItems();
+            frmDelivery.getCbDeliverer().removeAllItems();
             List<Deliverer> deliverers = Controller.getInstance().getAllDeliverers();
             frmDelivery.getCbDeliverer().setModel(new DefaultComboBoxModel<>(deliverers.toArray()));
             frmDelivery.getCbDeliverer().setSelectedIndex(-1);
@@ -94,21 +100,26 @@ public class DeliveryController {
         }
     }
 
-//    private void fillCbRestaurant() {
-//        frmDelivery.getCbRestaurant().removeAllItems();
-//        City city=(City) frmDelivery.getCbDeliveryCity().getSelectedItem();
-//        List<Restaurant> restaurants=Controller.getInstance().getAllRestaurants(city);
-//        frmDelivery.getCbRestaurant().setModel(new DefaultComboBoxModel<>(restaurants.toArray()));
-//        frmDelivery.getCbRestaurant().addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent e) {
-//                if(e.getStateChange()==ItemEvent.SELECTED){
-//                    //fillCbProduct();
-//                }
-//            }
-//        });
+    private void fillCbRestaurant(){
+        try {
+            City city=(City) frmDelivery.getCbDeliveryCity().getSelectedItem();
+            List<Restaurant> restaurants=Controller.getInstance().getAllRestaurantsFromCity(city);
+            frmDelivery.getCbRestaurant().setModel(new DefaultComboBoxModel<>(restaurants.toArray()));
+            frmDelivery.getCbRestaurant().setSelectedIndex(-1);
+            frmDelivery.getCbRestaurant().addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if(e.getStateChange()==ItemEvent.SELECTED){
+                        fillCbProduct();
+                        
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(DeliveryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     
-//    }
+    }
     
     private void fillDefaultValues() {
         String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
@@ -129,11 +140,74 @@ public class DeliveryController {
         frmDelivery.getTblDelivery().setModel(model);
     }
 
-//    private void fillCbProduct() {
-//        frmDelivery.getCbProduct().removeAllItems();
-//        List<Product> products = Controller.getInstance().getAllProducts();
-//        frmDelivery.getCbProduct().setModel(new DefaultComboBoxModel<>(products.toArray()));
-//    }
+    private void fillCbProduct() {
+        try {
+            Restaurant restaurant=(Restaurant) frmDelivery.getCbRestaurant().getSelectedItem();
+            List<Product> products = Controller.getInstance().getAllProductsFromRestaurant(restaurant);
+            frmDelivery.getCbProduct().setModel(new DefaultComboBoxModel<>(products.toArray()));
+            frmDelivery.getCbProduct().setSelectedIndex(-1);
+            frmDelivery.getCbProduct().addItemListener(new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    if(e.getStateChange()==ItemEvent.SELECTED){
+                        Product product=(Product) e.getItem();
+                        frmDelivery.getTxtProductPrice().setText(String.valueOf(product.getProductPrice()));
+                        frmDelivery.getTxtProductQuantity().setText("1");
+                        frmDelivery.getTxtProductQuantity().grabFocus();   
+                        frmDelivery.getTxtProductQuantity().setSelectionStart(0);
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(DeliveryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void addActionListeners() {
+        frmDelivery.addAddBtnActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               addProduct();
+            }
+
+            private void addProduct() {
+                 try{
+                Product product=(Product) frmDelivery.getCbProduct().getSelectedItem();
+                BigDecimal price=new BigDecimal(frmDelivery.getTxtProductPrice().getText().trim());
+                BigDecimal quantity=new BigDecimal(frmDelivery.getTxtProductQuantity().getText().trim());
+                DeliveryTableModel dtm=(DeliveryTableModel) frmDelivery.getTblDelivery().getModel();
+                dtm.addDeliveryItem(product,price,quantity);
+                BigDecimal totalAmount=dtm.getDelivery().getItemsAmount();
+                frmDelivery.getTxtTotalAmount().setText(String.valueOf(totalAmount));
+                
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frmDelivery, "Invalid product data!"+ ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        });
+        
+        frmDelivery.addRemoveBtnActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeInvoiceItem();
+            }
+
+            private void removeInvoiceItem() {
+                int rowIndex = frmDelivery.getTblDelivery().getSelectedRow();
+                DeliveryTableModel dtm = (DeliveryTableModel) frmDelivery.getTblDelivery().getModel();
+                if (rowIndex >= 0) {
+                    dtm.removeInvoiceItem(rowIndex);
+                    BigDecimal totalAmount = dtm.getDelivery().getItemsAmount();
+                    frmDelivery.getTxtTotalAmount().setText(String.valueOf(totalAmount));
+                } else {
+                    JOptionPane.showMessageDialog(frmDelivery, "Delivery item is not selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        });
+    }
 
   
 

@@ -6,6 +6,7 @@
 package rs.ac.bg.fon.ps.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,8 @@ public class Delivery {
     private List <DeliveryItem> deliveryItems;
 
     public Delivery() {
+        this.deliveryItems=new ArrayList<>();
+        this.itemsAmount=BigDecimal.ZERO;
     }
 
     public Delivery(Long deliveryID, Date dateOfCreation, DeliveryStatus deliveryStatus, String consumerAddress, String consumerPhone, BigDecimal deliveryCost, BigDecimal itemsAmount, Operator operator, Deliverer deliverer, List<DeliveryItem> deliveryItems) {
@@ -121,6 +124,7 @@ public class Delivery {
 
     public void setDeliveryItems(List <DeliveryItem> deliveryItems) {
         this.deliveryItems = deliveryItems;
+        
     }
     
     

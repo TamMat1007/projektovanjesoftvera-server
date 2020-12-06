@@ -8,16 +8,12 @@ package rs.ac.bg.fon.ps.repository.db.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import rs.ac.bg.fon.ps.domain.City;
 import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.domain.DelivererStatus;
-import rs.ac.bg.fon.ps.domain.Operator;
 import rs.ac.bg.fon.ps.repository.db.DBConnectionFactory;
 import rs.ac.bg.fon.ps.repository.db.DbRepository;
 
@@ -117,5 +113,10 @@ public class RepositoryDbDeliverer implements DbRepository<Deliverer> {
             throw new Exception("Delete product DB error: \n"+ex.getMessage());
         }
       }
+
+    @Override
+    public List<Deliverer> findByQuery(String sql) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
