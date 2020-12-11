@@ -49,9 +49,5 @@ public class RestaurantsContoller {
             Logger.getLogger(RestaurantsContoller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     
-     public void refresh() {
-        fillTblRestaurants();
-    }
     
 }

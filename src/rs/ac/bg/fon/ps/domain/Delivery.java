@@ -21,7 +21,7 @@ public class Delivery {
     private DeliveryStatus deliveryStatus;
     private String consumerAddress;
     private String consumerPhone;
-    private BigDecimal deliveryCost;
+    private BigDecimal deliveryCost=BigDecimal.valueOf(200.0);
     private BigDecimal itemsAmount;
     private Operator operator;
     private Deliverer deliverer;
@@ -126,6 +126,7 @@ public class Delivery {
         this.deliveryItems = deliveryItems;
         
     }
+    
     
     
     @Override

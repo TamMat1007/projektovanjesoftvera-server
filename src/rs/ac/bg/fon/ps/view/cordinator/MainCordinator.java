@@ -72,7 +72,7 @@ public class MainCordinator {
 
     public void openAddNewDeliveryForm() {
        DeliveryController deliveryController = new DeliveryController(new FrmDelivery(mainContoller.getFrmMain(), true));
-       deliveryController.openForm(FormMode.FORM_ADD);
+       deliveryController.openForm();
 
     }
     

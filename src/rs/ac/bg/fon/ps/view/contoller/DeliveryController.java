@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.swing.JOptionPane;
 import rs.ac.bg.fon.ps.controller.Controller;
 import rs.ac.bg.fon.ps.domain.City;
 import rs.ac.bg.fon.ps.domain.Deliverer;
+import rs.ac.bg.fon.ps.domain.DelivererStatus;
 import rs.ac.bg.fon.ps.domain.Delivery;
 import rs.ac.bg.fon.ps.domain.DeliveryStatus;
 import rs.ac.bg.fon.ps.domain.Operator;
@@ -27,6 +29,7 @@ import rs.ac.bg.fon.ps.domain.Product;
 import rs.ac.bg.fon.ps.domain.Restaurant;
 import rs.ac.bg.fon.ps.view.constant.Constants;
 import rs.ac.bg.fon.ps.view.cordinator.MainCordinator;
+import rs.ac.bg.fon.ps.view.form.FrmDeliverer;
 import rs.ac.bg.fon.ps.view.form.FrmDelivery;
 import rs.ac.bg.fon.ps.view.form.components.table.DeliveryTableModel;
 import rs.ac.bg.fon.ps.view.form.util.FormMode;
@@ -42,13 +45,13 @@ public class DeliveryController {
         this.frmDelivery = frmDelivery;
     }
 
-    public void openForm(FormMode formMode) {
+    public void openForm() {
         frmDelivery.setLocationRelativeTo(MainCordinator.getInstance().getMainContoller().getFrmMain());
-        prepareView(formMode);
+        prepareView();
         frmDelivery.setVisible(true);
     }
 
-    private void prepareView(FormMode formMode) {
+    private void prepareView() {
         clearCb();
         fillCbDeliveryStatus();
         fillCbCity();
@@ -121,25 +124,6 @@ public class DeliveryController {
     
     }
     
-    private void fillDefaultValues() {
-        String currentDate = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
-        frmDelivery.getTxtDeliveryDate().setText(currentDate);
-
-        frmDelivery.getTxtDeliveryCost().setText("0.0");
-        frmDelivery.getTxtTotalAmount().setText("0.0");
-        frmDelivery.getTxtOverallTotal().setText("0.0");
-        
-        Operator operator = (Operator) MainCordinator.getInstance().getParam(Constants.PARAM_CURRENT_OPERATOR);
-        frmDelivery.getTxtOperator().setText(operator.getOperatorName()+" " + operator.getOperatorLastname());
-        
-       frmDelivery.getCbDeliveryStatus().setSelectedItem(DeliveryStatus.IN_PROGRESS);
-    }
-
-    private void fillTblDelivery() {
-        DeliveryTableModel model = new DeliveryTableModel(new Delivery());
-        frmDelivery.getTblDelivery().setModel(model);
-    }
-
     private void fillCbProduct() {
         try {
             Restaurant restaurant=(Restaurant) frmDelivery.getCbRestaurant().getSelectedItem();
@@ -163,6 +147,27 @@ public class DeliveryController {
         }
     }
 
+     private void fillDefaultValues() {
+        String currentDate = new SimpleDateFormat("dd.MM.yyyy.").format(new Date());
+        frmDelivery.getTxtDeliveryDate().setText(currentDate);
+
+        frmDelivery.getTxtDeliveryCost().setText("0.0");
+        frmDelivery.getTxtTotalAmount().setText("0.0");
+        frmDelivery.getTxtOverallTotal().setText("0.0");
+        
+        Operator operator = (Operator) MainCordinator.getInstance().getParam(Constants.PARAM_CURRENT_OPERATOR);
+        frmDelivery.getTxtOperator().setText(operator.getOperatorName()+" " + operator.getOperatorLastname());
+        
+       frmDelivery.getCbDeliveryStatus().setSelectedItem(DeliveryStatus.IN_PROGRESS);
+    }
+
+    
+    private void fillTblDelivery() {
+        DeliveryTableModel model = new DeliveryTableModel(new Delivery());
+        frmDelivery.getTblDelivery().setModel(model);
+    }
+    
+    
     private void addActionListeners() {
         frmDelivery.addAddBtnActionListener(new ActionListener(){
             @Override
@@ -191,10 +196,10 @@ public class DeliveryController {
         frmDelivery.addRemoveBtnActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeInvoiceItem();
+                removeDeliveryItem();
             }
 
-            private void removeInvoiceItem() {
+            private void removeDeliveryItem() {
                 int rowIndex = frmDelivery.getTblDelivery().getSelectedRow();
                 DeliveryTableModel dtm = (DeliveryTableModel) frmDelivery.getTblDelivery().getModel();
                 if (rowIndex >= 0) {
@@ -207,8 +212,40 @@ public class DeliveryController {
             }
 
         });
-    }
+        
+        frmDelivery.addSaveBtnActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveDelivery();
+            }
 
+            private void saveDelivery() {
+                try {
+                    DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
+                    DeliveryTableModel model = (DeliveryTableModel) frmDelivery.getTblDelivery().getModel();
+                    Delivery delivery = model.getDelivery();
+                 //   delivery.setNumber(frmDelivery.getTxtInvoiceNumber().getText().trim()); //TODO 
+                    delivery.setDateOfCreation(df.parse(frmDelivery.getTxtDeliveryDate().getText().trim()));
+                    Operator operator=(Operator) MainCordinator.getInstance().getParam(Constants.PARAM_CURRENT_OPERATOR);
+                    delivery.setOperator(operator);
+                    Deliverer deliverer=(Deliverer) frmDelivery.getCbDeliverer().getSelectedItem();
+                    delivery.setDeliverer(deliverer);
+                    delivery.setConsumerAddress(frmDelivery.getTxtConsumerAddress().getText());
+                    delivery.setConsumerPhone(frmDelivery.getTxtConsumerContact().getText());
+                    delivery.setDeliveryStatus((DeliveryStatus) frmDelivery.getCbDeliveryStatus().getSelectedItem());
+                    Controller.getInstance().saveDelivery(delivery);
+                    //Controler.getInstance().setDelivererStatus();
+                    frmDelivery.getTxtDeliveryID().setText(String.valueOf(delivery.getDeliveryID()));
+                    JOptionPane.showMessageDialog(frmDelivery, "Delivery is saved!");
+                    frmDelivery.dispose();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(frmDelivery, "Delivery is not saved! " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+    
   
 
     

@@ -532,12 +532,35 @@ public class FrmDelivery extends javax.swing.JDialog {
         return cbDeliveryStatus;
     }
 
+    public JTextField getTxtDeliveryID() {
+        return txtDeliveryID;
+    }
+
+    public void setTxtDeliveryID(JTextField txtDeliveryID) {
+        this.txtDeliveryID = txtDeliveryID;
+    }
+
+    public JTextField getTxtConsumerAddress() {
+        return txtConsumerAddress;
+    }
+
+    public JTextField getTxtConsumerContact() {
+        return txtConsumerContact;
+    }
+    
+    
+    
+
     public void addAddBtnActionListener(ActionListener actionListener) {
         btnAdd.addActionListener(actionListener);
     }
 
     public void addRemoveBtnActionListener(ActionListener actionListener) {
         btnRemove.addActionListener(actionListener);
+    }
+
+    public void addSaveBtnActionListener(ActionListener actionListener) {
+        btnSave.addActionListener(actionListener);
     }
     
     

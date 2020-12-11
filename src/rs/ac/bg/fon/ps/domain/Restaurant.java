@@ -5,7 +5,6 @@
  */
 package rs.ac.bg.fon.ps.domain;
 
-import com.mysql.cj.util.TimeUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -8,6 +8,7 @@ package rs.ac.bg.fon.ps.controller;
 import java.util.List;
 import rs.ac.bg.fon.ps.domain.Deliverer;
 import rs.ac.bg.fon.ps.domain.City;
+import rs.ac.bg.fon.ps.domain.Delivery;
 import rs.ac.bg.fon.ps.domain.Operator;
 import rs.ac.bg.fon.ps.domain.Product;
 import rs.ac.bg.fon.ps.domain.Restaurant;
@@ -15,6 +16,7 @@ import rs.ac.bg.fon.ps.repository.Repository;
 import rs.ac.bg.fon.ps.repository.db.DbRepository;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbCity;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbDeliverer;
+import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbDelivery;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbOperator;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbProduct;
 import rs.ac.bg.fon.ps.repository.db.impl.RepositoryDbRestaurant;
@@ -30,6 +32,7 @@ public class Controller {
     private final Repository repositoryDeliverer;
     private final Repository repositoryRestaurant;
     private final Repository repositoryProduct;
+    private final Repository repositoryDelivery;
     
     private static Controller controller;
 
@@ -39,6 +42,7 @@ public class Controller {
         this.repositoryDeliverer= new RepositoryDbDeliverer();
         this.repositoryRestaurant=new RepositoryDbRestaurant();
         this.repositoryProduct= new RepositoryDbProduct();
+        this.repositoryDelivery= new RepositoryDbDelivery();
     }
     
     public static Controller getInstance() {
@@ -173,6 +177,20 @@ public class Controller {
         return products;
 
     }   
+
+    public void saveDelivery(Delivery delivery) throws Exception {
+         ((DbRepository) repositoryDelivery).connect();
+        try {
+            repositoryDelivery.add(delivery);
+            ((DbRepository) repositoryDelivery).commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ((DbRepository) repositoryDelivery).rollback();
+            throw e;
+        } finally {
+            ((DbRepository) repositoryDelivery).disconnect();
+        }
+    }
 
     
 }
