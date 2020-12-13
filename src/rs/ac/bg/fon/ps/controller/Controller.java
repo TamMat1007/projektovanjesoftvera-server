@@ -62,8 +62,20 @@ public class Controller {
     }
     
     
-    public List<City> getAllCities(){
-        return repositoryCity.getAll();
+    public List<City> getAllCities()throws Exception{
+        List<City> cities=null;
+        ((DbRepository)repositoryCity).connect();
+        try{
+            cities = repositoryCity.getAll();
+            ((DbRepository)repositoryCity).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DbRepository)repositoryCity).rollback();
+            throw e;
+        }finally{
+            ((DbRepository)repositoryCity).disconnect();
+        }
+        return cities;
     }
     
     public void addDeliverer(Deliverer deliverer) throws Exception{
@@ -85,6 +97,24 @@ public class Controller {
         ((DbRepository)repositoryDeliverer).connect();
         try{
             deliverers = repositoryDeliverer.getAll();
+            ((DbRepository)repositoryDeliverer).commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            ((DbRepository)repositoryDeliverer).rollback();
+            throw e;
+        }finally{
+            ((DbRepository)repositoryDeliverer).disconnect();
+        }
+        return deliverers;
+    }
+    
+    public List<Deliverer> getAllFreeDeliverersFromCity(City city) throws Exception{
+        List<Deliverer> deliverers=null;
+        String sql="SELECT d.delivererID as delivererID, d.delivererName as delivererName, delivererLastname,delivererPhone,delivererStatus, "
+                + "c.cityID as cid, c.cityName as cname FROM deliverer d inner join city c ON (d.cityID=c.cityID) where d.cityID="+ city.getCityID()+" and delivererStatus='FREE'";
+        ((DbRepository)repositoryDeliverer).connect();
+        try{
+            deliverers = repositoryDeliverer.findByQuery(sql);
             ((DbRepository)repositoryDeliverer).commit();
         }catch(Exception e){
             e.printStackTrace();

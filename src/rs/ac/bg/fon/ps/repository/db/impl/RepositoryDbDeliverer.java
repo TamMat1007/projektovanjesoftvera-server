@@ -60,17 +60,24 @@ public class RepositoryDbDeliverer implements DbRepository<Deliverer> {
     @Override
     public void add(Deliverer deliverer) throws Exception {
         try {
-            String sql = "INSERT INTO deliverer VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO deliverer(delivererName,delivererLastname,delivererPhone,delivererStatus,cityID) VALUES(?,?,?,?,?)";
 
             Connection connection = DBConnectionFactory.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setLong(1, deliverer.getDelivererID());
-            statement.setString(2, deliverer.getDelivererName());
-            statement.setString(3, deliverer.getDelivererLastname());
-            statement.setString(4, deliverer.getDelivererPhone());
-            statement.setString(5, deliverer.getDelivererStatus().toString());
-            statement.setLong(6, deliverer.getDelivererCity().getCityID());
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, deliverer.getDelivererName());
+            statement.setString(2, deliverer.getDelivererLastname());
+            statement.setString(3, deliverer.getDelivererPhone());
+            statement.setString(4, deliverer.getDelivererStatus().toString());
+            statement.setLong(5, deliverer.getDelivererCity().getCityID());
             statement.executeUpdate();
+            ResultSet rsKey = statement.getGeneratedKeys();
+            if (rsKey.next()) {
+                Long delivererID = rsKey.getLong(1);
+                deliverer.setDelivererID(delivererID);
+            } else {
+                throw new Exception("Deliverer id is not generated!");
+            }
+            rsKey.close();
             statement.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -116,7 +123,34 @@ public class RepositoryDbDeliverer implements DbRepository<Deliverer> {
 
     @Override
     public List<Deliverer> findByQuery(String sql) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            List<Deliverer> deliverers = new ArrayList<>();
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                Deliverer deliverer=new Deliverer();
+                deliverer.setDelivererID(rs.getLong("delivererID"));
+                deliverer.setDelivererName(rs.getString("delivererName"));
+                deliverer.setDelivererLastname(rs.getString("delivererLastname"));
+                deliverer.setDelivererPhone(rs.getString("delivererPhone"));
+                deliverer.setDelivererStatus(DelivererStatus.valueOf(rs.getString("delivererStatus")));
+                
+                City city=new City();
+                city.setCityID(rs.getLong("cid"));
+                city.setCityName(rs.getString("cname"));
+                
+                deliverer.setDelivererCity(city);
+                deliverers.add(deliverer);
+
+            }
+            rs.close();
+            statement.close();
+            return deliverers;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
     
 }

@@ -39,13 +39,13 @@ public class RepositoryDbRestaurant implements DbRepository<Restaurant>{
                 restaurant.setRestaurantName(rs.getString("restaurantName"));
                 restaurant.setRestaurantAddress(rs.getString("restaurantAddress"));
                 restaurant.setRestaurantPhone(rs.getString("restaurantPhone"));
-                Date oworkingd=new Date(rs.getDate("openWorkingDay").getTime());
+                Date oworkingd=new Date(rs.getTime("openWorkingDay").getTime());
                 restaurant.setOpenWorkingDay(oworkingd);
-                Date cworkingd=new Date(rs.getDate("closedWorkingDay").getTime());
+                Date cworkingd=new Date(rs.getTime("closedWorkingDay").getTime());
                 restaurant.setClosedWorkingDay(cworkingd);
-                Date oweekd=new Date(rs.getDate("openWeekend").getTime());
+                Date oweekd=new Date(rs.getTime("openWeekend").getTime());
                 restaurant.setOpenWeekend(oweekd);
-                Date cweekd=new Date(rs.getDate("closedWeekend").getTime());
+                Date cweekd=new Date(rs.getTime("closedWeekend").getTime());
                 restaurant.setClosedWeekend(cweekd);
                 
                 City city=new City();
